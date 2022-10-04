@@ -1,0 +1,168 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LaTeX Example: Project Report
+%
+% Source: http://www.howtotex.com
+%
+% Feel free to distribute this example, but please keep the referral
+% to howtotex.com
+% Date: March 2011 
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% How to use writeLaTeX: 
+%
+% You edit the source code here on the left, and the preview on the
+% right shows you the result within a few seconds.
+%
+% Bookmark this page and share the URL with your co-authors. They can
+% edit at the same time!
+%
+% You can upload figures, bibliographies, custom classes and
+% styles using the files menu.
+%
+% If you're new to LaTeX, the wikibook is a great place to start:
+% http://en.wikibooks.org/wiki/LaTeX
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Edit the title below to update the display in My Documents
+%\title{Project Report}
+%
+%%% Preamble
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage{fourier}
+
+\usepackage[english]{babel}															% English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}	
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage[pdftex]{graphicx}	
+\usepackage{parskip} % Sets space between paragraphs
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{lineno}
+\usepackage{color, soul}
+
+% Adds colours to links
+\hypersetup{
+    colorlinks=true,
+    linkcolor=magenta, % makes links to equations, figs, etc magenta
+    urlcolor=blue, % makes url links blue
+    citecolor = red % makes citation links red
+}
+
+\newcommand{\appropto}{\mathrel{\vcenter{
+  \offinterlineskip\halign{\hfil$##$\cr
+    \propto\cr\noalign{\kern2pt}\sim\cr\noalign{\kern-2pt}}}}}
+
+%%% Custom sectioning
+\usepackage{sectsty}
+\allsectionsfont{\centering \normalfont\scshape}
+
+
+%%% Custom headers/footers (fancyhdr package)
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead{}											% No page header
+\fancyfoot[L]{}											% Empty 
+\fancyfoot[C]{}											% Empty
+\fancyfoot[R]{\thepage}									% Pagenumbering
+\renewcommand{\headrulewidth}{0pt}			% Remove header underlines
+\renewcommand{\footrulewidth}{0pt}				% Remove footer underlines
+\setlength{\headheight}{13.6pt}
+
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}		% Equationnumbering: section.eq#
+%\numberwithin{figure}{section}			% Figurenumbering: section.fig#
+\numberwithin{table}{section}				% Tablenumbering: section.tab#
+\usepackage{gensymb}
+\usepackage{relsize}
+%%% Maketitle metadata
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
+
+
+%% To use line numbers 
+\linenumbers
+
+%% create a title page
+\title{
+		%\vspace{-1in} 	
+		\usefont{OT1}{bch}{b}{n}
+		\normalfont \normalsize \textsc{Queen's University} \\ [25pt]
+		\horrule{0.5pt} \\[0.4cm]
+		\huge Humpback Whale Identification Midterm Report \\
+		\horrule{2pt} \\[0.5cm]
+}
+\author{
+    \normalfont 
+      CISC 867 - Deep Learning Project \\
+    \normalfont
+    Group Members: \\ 
+    \normalsize
+    Emily Medema (20340337) \\ 
+    \normalsize
+    Stephen McKeon () \\ 
+    \normalsize
+    Flourish Adebayo (20312488) \\
+    October 2022 \\ [3pt]}
+\date{\vspace{-5ex}}
+
+
+%%% Begin document
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\begin{document}
+%% remove the page number on the title page 
+\pagenumbering{gobble}
+%% need this line to add the title page you just created 
+\maketitle
+
+%% the section command gives a new section with the given header. 
+
+
+%% go to a new page 
+\newpage 
+%% start the page numbering again 
+\pagenumbering{arabic}
+
+\section*{Introduction}\label{sec: intro}
+
+Deep learning is exponentially growing in the field of Machine Learning (ML) and Deep Neural Networks (DNN). With many DNN structures, the Convolutional Neural Networks (CNN) are presently the main tool used for image analysis and classification purposes.  
+
+There are different algorithms for image classification. The most common ones are deep learning and machine learning. Different models have distinct results in different problems. Image classification using traditional deep learning and machine learning algorithms has its advantages. Comparison and evaluation of images using classification algorithms based on traditional machine learning and deep learning are of great significance for selecting algorithms to classify pictures. 
+
+In this project, we will compare and analyze multiple methods of image classification and the traditional machine learning approach using the Humpback Whale Identification Challenge. 
+
+The Humpback whale identification challenge project intends to predict the species of a humpback whale using only tail images 
+
+The dataset that would be used for this project is obtained from Kaggle. It contains thousands of images of humpback whale flukes. Individual whales have been identified by researchers and given an identification (Id). The challenge is to predict the whale Id of images in the test set. What makes this such a challenge is that there are only a few examples for over 3,000 whale Ids. 
+
+%hello world I am a comment
+
+\section{Methodology}\label{sec: meth}
+
+
+\section{Evaluation/Results}\label{sec: results}
+
+\section{Bibliography and References}\label{sec: bibliography}
+
+TODO: customize this, this is just here as a reminder as to how to do it
+
+One of my favourite things is to use \LaTeX{} to format my bibliographies. To demonstrate this I will be using Bibtex, a reference management software that format's your references. I will also show you how to use JabRef to organize your references. In the same google drive that you downloaded this document from, download the bibliography file and load it into your overleaf. 
+
+
+It is important to note the the bibliography does not print if you have not cited anything from it. Therefore I will cite the documents below to ensure the references appear on the last page. This is how you cite a document as an in text citation \cite{Younespour2019}. There are many different bibliography styles available that you can look up. Notice the green text that appears inside the in text citations? That is the tag for the .bib entry. You need to come up with this when saving an entry in your .bib file. We will see an example of this shortly. 
+
+
+First, let's download JabRef. Now we can look at how to add a new entry to our .bib file. Open UBC Summons on your computer, and find an article. Go to more options, and BibTex. Then open the file using JabRef. Right click on the entry and copy this into the file that you are working with. Change the Bibtexkey to be whatever you want for an identifying key, and save. The file won't automatically be updated in Overleaf, so we need to upload it again. 
+
+If you compile the file, you will again notice that your new entry is not there. Make sure to cite the paper. 
+
+ 
+\clearpage
+\bibliography{references} 
+\bibliographystyle{ieeetr}
+
+
+
+%%% End document
+\end{document}
