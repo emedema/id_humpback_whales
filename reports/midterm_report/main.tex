@@ -126,20 +126,26 @@
 
 \section*{Introduction}\label{sec: intro}
 
-Deep learning is exponentially growing in the field of Machine Learning (ML) and Deep Neural Networks (DNN). With many DNN structures, the Convolutional Neural Networks (CNN) are presently the main tool used for image analysis and classification purposes.  
+Image classification is a booming area of interest in the Computer Vision and Machine Learning fields. Due to the rapid increase of image sharing after the popularity of social media and personal cameras (and later smart phones) \cite{}, there are a surplus of images to classify and analyze on the internet. There are different algorithms for image classification. The most common ones are deep learning and machine learning. Different models have distinct results in different problems. Image classification using traditional deep learning and machine learning algorithms has its advantages. 
 
-There are different algorithms for image classification. The most common ones are deep learning and machine learning. Different models have distinct results in different problems. Image classification using traditional deep learning and machine learning algorithms has its advantages. Comparison and evaluation of images using classification algorithms based on traditional machine learning and deep learning are of great significance for selecting algorithms to classify pictures. 
+%% TODO: go into pros and cons?
 
-In this project, we will compare and analyze multiple methods of image classification and the traditional machine learning approach using the Humpback Whale Identification Challenge. 
+In fact, Deep Neural Networks (DNN) is exponentially growing in the field of Machine Learning (ML) and Deep Learning. Of the many DNN structures, Convolutional Neural Networks (CNN) are presently the main tool used for image analysis and classification purposes \cite{}. Comparison and evaluation of images using classification algorithms based on traditional machine learning and deep learning are of great significance for selecting algorithms to classify pictures. 
 
-The Humpback whale identification challenge project intends to predict the species of a humpback whale using only tail images 
+Due to the aforementioned popularity of cameras, many scientific studies are utilizing photography as a method of monitoring their projects. This usually results in a scientist having to analyze these images themselves, which can take many hours and a lot of technical knowledge. However, we can now use image classification models to perform these same tasks in a lot less time with comparable accuracy \cite{}. 
 
-The dataset that would be used for this project is obtained from Kaggle. It contains thousands of images of humpback whale flukes. Individual whales have been identified by researchers and given an identification (Id). The challenge is to predict the whale Id of images in the test set. What makes this such a challenge is that there are only a few examples for over 3,000 whale Ids. 
+The Humpback Whale Identification Challenge is a Kaggle Competition created to aid whale conservation efforts with the creation of an algorithm to identify individual whales in images. After centuries of intense whaling, recovering whale populations still have a hard time adapting to warming oceans and struggle to compete every day with the industrial fishing industry for food. Scientists use photo surveillance systems to monitor whale activity and can use the shape of whales’ tails and unique markings to identify particular whales and analyze their movements.
 
-%hello world I am a comment
+%% TODO: this needs to be refined
+We can use this data to compare and analyze popular methods of image classification. Specifically, we will be comparing a CNN, CNN augmented with transfer learning, and classical machine learning.
 
 \section{Methodology}\label{sec: meth}
 
+\subsection{Data Preprocessing}
+
+The competition contains thousands of images of humpback whale flukes. Individual whales have been identified by researchers and given an identification (Id). The challenge is to predict the whale Id of images in the test set. What makes this such a challenge is that there are only a few examples for over 3,000 whale Ids.
+
+Due to this, we will implement the following data augmentation methods in order to gain a larger set of images for each whale.
 
 \section{Evaluation/Results}\label{sec: results}
 
