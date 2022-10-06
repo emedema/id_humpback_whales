@@ -81,7 +81,7 @@
 
 
 %% To use line numbers 
-\linenumbers
+%\linenumbers
 
 %% create a title page
 \title{
@@ -125,7 +125,7 @@
 \pagenumbering{arabic}
 
 \section*{Introduction}\label{sec: intro}
-
+%Define and motivate the problem, discuss background material or related work, and briefly summarize your approach.
 Image classification is a booming area of interest in the Computer Vision and Machine Learning fields. Due to the rapid increase of image sharing after the popularity of social media and personal cameras (and later smart phones) \cite{}, there are a surplus of images to classify and analyze on the internet. There are different algorithms for image classification. The most common ones are deep learning and machine learning. Different models have distinct results in different problems. Image classification using traditional deep learning and machine learning algorithms has its advantages. 
 
 %% TODO: go into pros and cons?
@@ -137,12 +137,13 @@ Due to the aforementioned popularity of cameras, many scientific studies are uti
 The Humpback Whale Identification Challenge is a Kaggle Competition created to aid whale conservation efforts with the creation of an algorithm to identify individual whales in images. After centuries of intense whaling, recovering whale populations still have a hard time adapting to warming oceans and struggle to compete every day with the industrial fishing industry for food. Scientists use photo surveillance systems to monitor whale activity and can use the shape of whales’ tails and unique markings to identify particular whales and analyze their movements.
 
 %% TODO: this needs to be refined
-We can use this data to compare and analyze popular methods of image classification. Specifically, we will be comparing a CNN, a Siamese Network, CNN augmented with transfer learning, and classical machine learning.
+%Siamese network seems to perform well with this data
+We can use this data to compare and analyze popular methods of image classification. Specifically, we will be comparing a CNN, CNN augmented with transfer learning, and classical machine learning.
 
-\section{Background}\label{sec: background}
+\subsection{Background}\label{sec: background}
 
 \section{Methodology}\label{sec: meth}
-
+%Details of the approach: Include any formulas, pseudocode, diagrams -- anything that is necessary to clearly explain your system and what you have done. If possible, illustrate the intermediate stages of your approach with results images.
 \subsection{Data Preprocessing}
 
 The competition contains thousands of images of humpback whale flukes. Individual whales have been identified by researchers and given an identification (Id). The challenge is to predict the whale Id of images in the test set. What makes this such a challenge is that there are only a few examples for over 3,000 whale Ids.
