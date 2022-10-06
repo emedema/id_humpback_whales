@@ -137,7 +137,7 @@ Due to the aforementioned popularity of cameras, many scientific studies are uti
 The Humpback Whale Identification Challenge is a Kaggle Competition created to aid whale conservation efforts with the creation of an algorithm to identify individual whales in images. After centuries of intense whaling, recovering whale populations still have a hard time adapting to warming oceans and struggle to compete every day with the industrial fishing industry for food. Scientists use photo surveillance systems to monitor whale activity and can use the shape of whales’ tails and unique markings to identify particular whales and analyze their movements.
 
 %% TODO: this needs to be refined
-We can use this data to compare and analyze popular methods of image classification. Specifically, we will be comparing a CNN, CNN augmented with transfer learning, and classical machine learning.
+We can use this data to compare and analyze popular methods of image classification. Specifically, we will be comparing a CNN, a Siamese Network, CNN augmented with transfer learning, and classical machine learning.
 
 \section{Methodology}\label{sec: meth}
 
@@ -146,6 +146,12 @@ We can use this data to compare and analyze popular methods of image classificat
 The competition contains thousands of images of humpback whale flukes. Individual whales have been identified by researchers and given an identification (Id). The challenge is to predict the whale Id of images in the test set. What makes this such a challenge is that there are only a few examples for over 3,000 whale Ids.
 
 Due to this, we will implement the following data augmentation methods in order to gain a larger set of images for each whale.
+
+\subsection{Model Training}
+
+\subsubsection{Hyperparameter Tuning}
+
+\subsection{Model Testing}
 
 \section{Evaluation/Results}\label{sec: results}
 
