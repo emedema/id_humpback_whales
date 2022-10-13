@@ -30,7 +30,7 @@
 \documentclass[paper=a4, fontsize=11pt]{scrartcl}
 \usepackage[T1]{fontenc}
 \usepackage{fourier}
-
+\usepackage{float}
 \usepackage[english]{babel}															% English language/hyphenation
 \usepackage[protrusion=true,expansion=true]{microtype}	
 \usepackage{amsmath,amsfonts,amsthm} % Math packages
@@ -40,6 +40,8 @@
 \usepackage{hyperref}
 \usepackage{lineno}
 \usepackage{color, soul}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
 
 % Adds colours to links
 \hypersetup{
@@ -100,7 +102,7 @@
     \normalsize
     Emily Medema (20340337) \\ 
     \normalsize
-    Stephen McKeon () \\ 
+    Stephen McKeon (20379475) \\ 
     \normalsize
     Flourish Adebayo (20312488) \\
     October 2022 \\ [3pt]}
@@ -153,7 +155,7 @@ In order to identify whales by their fluke we will first preprocess the data to 
 
 The steps involved in this identifying system are:
 \begin{itemize}
-    \item Preprocessing the data to remove noise via [insert here]
+    \item Preprocessing the data to remove noise via cropping, affine transformations, and converting to greyscale
     \item Augmentation of the data
     \item Classification with CNN
     \item Classification with CNN augmented with transfer learning
@@ -163,12 +165,83 @@ The steps involved in this identifying system are:
 
 \subsection{Data Preprocessing}
 
-The competition contains thousands of images of humpback whale flukes. Individual whales have been identified by researchers and given an identification (Id). The challenge is to predict the whale Id of images in the test set. What makes this such a challenge is that there are only a few examples for over 3,000 whale Ids. To compensate for this we will be utilizing data augmentation as discussed later in this section. First, we must clean the dataset of noise, such as the background in the images and normalize the images so that there is as little variation as possible within the dataset except for the differences between individual whale's flukes.
+The competition contains thousands of images of humpback whale flukes. Individual whales have been identified by researchers and given an identification (Id). The challenge is to predict the whale Id of images in the test set. What makes this such a challenge is that there are only a few examples for over 3,000 whale Ids. To compensate for this we will be utilizing data augmentation as discussed later in this section. 
 
-%TODO: refine this.
-We will crop, scale, and resize the images such that all of the images are the same size and are only of the tail fin. This will ensure that all of our data is standardize and that we have less variance. We will do this by first converting all images to greyscale as some of the images in the dataset are greyscale and some are colour. In order to even the playing field, we converted all images to greyscale. [Stephen please add what you did]
+Before we can augment the data, however, we need to process it for use in a neural network. The first step was to crop as much noise from the images as possible, such as the background in the images. While many of the whale pictures in the dataset were already cropped tightly around the whale fluke, in some images the whale fluke occupied only a small area of the picture. Zooming onto the relevant part of the picture provides greater accuracy to a classification model. 
 
-Due to this, we will implement the following data augmentation methods in order to gain a larger set of images for each whale.
+A couple of months before this competition, a playground version of the same competition was hosted on Kaggle, but, as it was noted by the competition hosts, the real version featured even more data and cleaner labels. We were able to leverage the pre-trained weights from a CNN model from the playground version of the competition that identified the coordinates specifying a bounding box around the fluke of the whale in each image.The CNN model used to determine the proper bounding box of the whale fluke in each image was quite complex, as shown in \autoref{tab:table1}. Leveraging the weights from the trained model saved a lot of time.
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{CNN - Bounding Box Model}
+    \label{tab:table1}
+    \begin{tabular}{l|c|r} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+      \textbf{Layer} & \textbf{Output Shape} & \textbf{Params}\\
+      \hline
+      InputLayer & (128, 128, 1) & 0\\
+      Conv2D & (128, 128, 64) & 5248\\
+      Conv2D & (128, 128, 64) & 36928\\
+      BatchNormalization & (128, 128, 64) & 256\\
+      Conv2D & (64, 64, 64) & 16448\\
+      Conv2D & (64, 64, 64) & 36928\\
+      Conv2D & (64, 64, 64) & 36928\\
+      BatchNormalization & (64, 64, 64) & 256\\
+      Conv2D & (32, 32, 64) & 16448\\
+      Conv2D & (32, 32, 64) & 36928\\
+      Conv2D & (32, 32, 64) & 36928\\
+      BatchNormalization & (32, 32, 64) & 256\\
+      Conv2D & (16, 16, 64) & 16448\\
+      Conv2D & (16, 16, 64) & 36928\\
+      Conv2D & (16, 16, 64) & 36928\\
+      BatchNormalization & (16, 16, 64) & 256\\
+      Conv2D & (8, 8, 64) & 16448\\
+      Conv2D & (8, 8, 64) & 36928\\
+      Conv2D & (8, 8, 64) & 36928\\
+      BatchNormalization & (8, 8, 64) & 256\\
+      Conv2D & (4, 4, 64) & 16448\\
+      Conv2D & (4, 4, 64) & 36928\\
+      Conv2D & (4, 4, 64) & 36928\\
+      BatchNormalization & (4, 4, 64) & 256\\
+      MaxPooling2D_1 & (4, 1, 64) & 0\\
+      MaxPooling2D_2 & (1, 4, 64) & 0\\
+      Flatten_1 & (256) & 0\\
+      Flatten_2 & (256) & 0\\
+      Dense_1 & (16) & 4112\\
+      Dense_2 & (16) & 4112\\
+      Concatenate & (32) & 0\\
+      Dense & (4) & 132\\
+    \end{tabular}
+    \begin{tablenotes}
+      \small
+      \item Trainable params: 502,820
+    \end{tablenotes}
+  \end{center}
+\end{table}
+
+By describing the same neural network and loading the pre-trained weights, the training dataset could then be passed to the model and evaluated to obtain the coordinates for bounding boxes around the whales' flukes. These coordinates can then be used to visualize the bounding box region, as shown in \autoref{fig:fig1}.
+
+\begin{figure}[h]
+    \caption{Coordinates for Bounding Box overlayed on the corresponding images}
+    \centering
+    \includegraphics[width=0.5\textwidth]{BoundingBoxExample.png}
+    \label{fig:fig1}
+\end{figure}
+
+As you can see, the resulting bounding boxes are not perfect. This can be resolved by extending the region described by the bounding box before cropping the image. The idea is that clipping the edges of the fluke is more harmful than the noise obtained by fitting it exactly, thus an increased margin is preferred. Through trial and error, we determined that extending the crop region by 8\% was sufficient to ensure the entire fluke was captured. This is shown to have succeeded when comparing the coloured image from \autoref{fig:fig1} with the output from \autoref{fig:fig2}.
+
+As shown in the previous \autoref{fig:fig1}, some of the images in the dataset are greyscale and some are colour. In order to standardize the data and ensure our model does not learn any colour-only or greyscale-only specific features, we converted all images to greyscale.
+
+An affine transformation is a geometric transformation that preserves lines and parallelism - but not necessarily distances and angles. The final step for data preprocessing was to take the cropped area from the previous step and transform it to a uniform size for use as input to a neural network - in our case, 384x384x1 (only one channel for black and white). The resulting changes after cropping, converting to greyscale, and applying the affine transformation to the images from the previous figure are shown in \autoref{fig:fig2}. With these changes, the data is normalized so that there is as little variation as possible within the dataset aside from the differences between individual whale's flukes.
+
+\begin{figure}[h]
+    \caption{Original images (left) and their corresponding processed images (right)}
+    \centering
+    \includegraphics[width=0.4\textwidth]{ProcessedImages.png}
+    \label{fig:fig2}
+\end{figure}
+
+%TODO Add stuff about data augmentation
+%Due to this, we will implement the following data augmentation methods in order to gain a larger set of images for each whale.
 
 \subsection{Model Training}
 
