@@ -132,26 +132,43 @@ Image classification is a booming area of interest in the Computer Vision and Ma
 
 In fact, Deep Neural Networks (DNN) is exponentially growing in the field of Machine Learning (ML) and Deep Learning. Of the many DNN structures, Convolutional Neural Networks (CNN) are presently the main tool used for image analysis and classification purposes \cite{}. Comparison and evaluation of images using classification algorithms based on traditional machine learning and deep learning are of great significance for selecting algorithms to classify pictures. 
 
-Due to the aforementioned popularity of cameras, many scientific studies are utilizing photography as a method of monitoring their projects. This usually results in a scientist having to analyze these images themselves, which can take many hours and a lot of technical knowledge. However, we can now use image classification models to perform these same tasks in a lot less time with comparable accuracy \cite{}. 
+Due to the aforementioned popularity of cameras, many scientific studies are utilizing photography as a method of monitoring their projects. This usually results in a scientist having to analyze these images themselves, which can take many hours and a lot of technical knowledge \cite{JaisakthiS.M.2017Awms}. However, we can now use image classification models to perform these same tasks in a lot less time with comparable accuracy \cite{JaisakthiS.M.2017Awms}. 
 
-The Humpback Whale Identification Challenge is a Kaggle Competition created to aid whale conservation efforts with the creation of an algorithm to identify individual whales in images. After centuries of intense whaling, recovering whale populations still have a hard time adapting to warming oceans and struggle to compete every day with the industrial fishing industry for food. Scientists use photo surveillance systems to monitor whale activity and can use the shape of whales’ tails and unique markings to identify particular whales and analyze their movements.
+The Humpback Whale Identification Challenge is a Kaggle Competition created to aid whale conservation efforts with the creation of an algorithm to identify individual whales in images. After centuries of intense whaling, recovering whale populations still have a hard time adapting to warming oceans and struggle to compete every day with the industrial fishing industry for food. Scientists use photo surveillance systems to monitor whale activity and can use the shape of whales’ tails and unique markings to identify particular whales and analyze their movements \cite{JaisakthiS.M.2017Awms}.
 
 %% TODO: this needs to be refined
-%Siamese network seems to perform well with this data
 We can use this data to compare and analyze popular methods of image classification. Specifically, we will be comparing a CNN, CNN augmented with transfer learning, and classical machine learning.
 
 \subsection{Background}\label{sec: background}
+Despite lacking predators, whales have continued to be endangered. As whales play a large role within the oceans ecosystem, conservation efforts have been consistent over the years in order to ensure a stable food chain. Part of these conservation efforts is the tracking of whales to know the health and status of their species by marine biologists. This is mainly done through aerial surveillance and manual identification which is a very tricky process \cite{JaisakthiS.M.2017Awms}. As whale fins are identifiable features for individual whale, biologists are able to develop conservation strategies by observing individual whale and whale species behaviours. This can take a lot of time and resources, automating this process with a model to identify whales will alleviate this stress and allow for more time to develop better strategies for the continued survival of whales.
+
+Over the years, a lot of research has been done in this field. There have been multiple Kaggle competitions and there are a multitude of approaches to this problem. While there have been some studies on the application of transfer learning augmented deep learning and classical machine learning \cite{YuanHongchun2020AAIC}, it begs the comparison of the a classical machine learning model, such as SVM, as well as the deep learning model itself (without transfer learning). 
 
 \section{Methodology}\label{sec: meth}
 %Details of the approach: Include any formulas, pseudocode, diagrams -- anything that is necessary to clearly explain your system and what you have done. If possible, illustrate the intermediate stages of your approach with results images.
+
+%TODO: finish the machine learning model section
+
+In order to identify whales by their fluke we will first preprocess the data to remove noise such as the backgrounds and crop to show only the fin in question. Due to the low amount of images of the same whale, we will perform data augmentation via [insert method here]. This will allow us to develop a more accurate and robust model. We will then attempt to identify the whale via the developed CNN model, the CNN augmented with transfer learning, and [insert ml model here].
+
+The steps involved in this identifying system are:
+\begin{itemize}
+    \item Preprocessing the data to remove noise via [insert here]
+    \item Augmentation of the data
+    \item Classification with CNN
+    \item Classification with CNN augmented with transfer learning
+    \item Classification with [model]
+    \item Comparison of Results
+\end{itemize}
+
 \subsection{Data Preprocessing}
 
-The competition contains thousands of images of humpback whale flukes. Individual whales have been identified by researchers and given an identification (Id). The challenge is to predict the whale Id of images in the test set. What makes this such a challenge is that there are only a few examples for over 3,000 whale Ids.
-
-Due to this, we will implement the following data augmentation methods in order to gain a larger set of images for each whale.
+The competition contains thousands of images of humpback whale flukes. Individual whales have been identified by researchers and given an identification (Id). The challenge is to predict the whale Id of images in the test set. What makes this such a challenge is that there are only a few examples for over 3,000 whale Ids. To compensate for this we will be utilizing data augmentation as discussed later in this section. First, we must clean the dataset of noise, such as the background in the images and normalize the images so that there is as little variation as possible within the dataset except for the differences between individual whale's flukes.
 
 %TODO: refine this.
-We will also have to crop, scale, and resize the images such that all of the images are the same size and are only of the tail fin. This will ensure that all of our data is standardize and that we have less variance etc.
+We will crop, scale, and resize the images such that all of the images are the same size and are only of the tail fin. This will ensure that all of our data is standardize and that we have less variance. We will do this by first converting all images to greyscale as some of the images in the dataset are greyscale and some are colour. In order to even the playing field, we converted all images to greyscale. [Stephen please add what you did]
+
+Due to this, we will implement the following data augmentation methods in order to gain a larger set of images for each whale.
 
 \subsection{Model Training}
 
@@ -164,18 +181,6 @@ We will also have to crop, scale, and resize the images such that all of the ima
 \section{Experiment}\label{sec: experiment}
 
 \section{Conclusion}\label{sec: conlusion}
-
-\section{Bibliography and References}\label{sec: bibliography}
-
-TODO: customize this, this is just here as a reminder as to how to do it
-
-One of my favourite things is to use \LaTeX{} to format my bibliographies. To demonstrate this I will be using Bibtex, a reference management software that format's your references. I will also show you how to use JabRef to organize your references. In the same google drive that you downloaded this document from, download the bibliography file and load it into your overleaf. 
-
-
-It is important to note the the bibliography does not print if you have not cited anything from it. Therefore I will cite the documents below to ensure the references appear on the last page. This is how you cite a document as an in text citation \cite{LuTao2021Daco}. There are many different bibliography styles available that you can look up. Notice the green text that appears inside the in text citations? That is the tag for the .bib entry. You need to come up with this when saving an entry in your .bib file. We will see an example of this shortly. 
-
-
-If you compile the file, you will again notice that your new entry is not there. Make sure to cite the paper. 
 
  
 \clearpage
