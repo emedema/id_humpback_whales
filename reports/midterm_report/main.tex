@@ -231,7 +231,7 @@ As you can see, the resulting bounding boxes are not perfect. This can be resolv
 
 As shown in the previous \autoref{fig:fig1}, some of the images in the dataset are greyscale and some are colour. In order to standardize the data and ensure our model does not learn any colour-only or greyscale-only specific features, we converted all images to greyscale.
 
-An affine transformation is a geometric transformation that preserves lines and parallelism - but not necessarily distances and angles. The final step for data preprocessing was to take the cropped area from the previous step and transform it to a uniform size for use as input to a neural network - in our case, 384x384x1 (only one channel for black and white). The resulting changes after cropping, converting to greyscale, and applying the affine transformation to the images from the previous figure are shown in \autoref{fig:fig2}. With these changes, the data is normalized so that there is as little variation as possible within the dataset aside from the differences between individual whale's flukes.
+An affine transformation is a geometric transformation that preserves lines and parallelism - but not necessarily distances and angles. The final step for data preprocessing was to take the cropped area from the previous step and transform it to a uniform size for use as input to a neural network - in our case, 384x384x1 (only one channel for black and white). The resulting changes after cropping, converting to greyscale, and applying the affine transformation to the images from the previous figure are shown in \autoref{fig:fig2}. With these changes, the data is normalized so that there is as little variation as possible within the dataset aside from the differences between each whale's flukes.
 
 \begin{figure}[h]
     \caption{Original images (left) and their corresponding processed images (right)}
@@ -239,6 +239,8 @@ An affine transformation is a geometric transformation that preserves lines and 
     \includegraphics[width=0.4\textwidth]{ProcessedImages.png}
     \label{fig:fig2}
 \end{figure}
+
+%TODO Remove the new_whale class from the training dataset as it does not share any logical image features between its elements.
 
 %TODO Add stuff about data augmentation
 %Due to this, we will implement the following data augmentation methods in order to gain a larger set of images for each whale.
