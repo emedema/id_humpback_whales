@@ -91,7 +91,7 @@
 		\usefont{OT1}{bch}{b}{n}
 		\normalfont \normalsize \textsc{Queen's University} \\ [25pt]
 		\horrule{0.5pt} \\[0.4cm]
-		\huge Humpback Whale Identification Midterm Report \\
+		\huge Humpback Whale Identification- Midterm Report \\
 		\horrule{2pt} \\[0.5cm]
 }
 \author{
@@ -128,34 +128,57 @@
 
 \section*{Introduction}\label{sec: intro}
 %Define and motivate the problem, discuss background material or related work, and briefly summarize your approach.
-Image classification is a booming area of interest in the Computer Vision and Machine Learning fields. Due to the rapid increase of image sharing after the popularity of social media and personal cameras (and later smart phones) \cite{}, there are a surplus of images to classify and analyze on the internet. There are different algorithms for image classification. The most common ones are deep learning and machine learning. Different models have distinct results in different problems. Image classification using traditional deep learning and machine learning algorithms has its advantages. 
+The humpback whale is a species of baleen whale. It has a distinctive body shape with long pectoral fins and a knobbly head. They are known for their infringing and surface behaviour making them popular with whale watchers\cite{kareiva2006whales}. At the beginning of the 20th century, whale populations dropped but increased in the mid-20th century which brought a brief surge in the whale population due to the creation of the international whaling committee in 1946\cite{henderson2022behavior}. To understand better the preservation effort, researchers utilize photo surveillance mechanisms to understand marine activities. Various varieties of features of whales such as the shape, tail, makings, and tail length help researchers identify the type of whale they are analyzing \cite{JaisakthiS.M.2017Awms}. 
+
+Image classification is a booming area of interest in the Computer Vision and Machine Learning fields. Due to the rapid increase of image sharing after the popularity of social media and personal cameras (and later smart phones) \cite{jain2000statistical}, there are a surplus of images to classify and analyze on the internet. There are different algorithms for image classification. The most common ones are deep learning and machine learning. Different models have distinct results in different problems. Image classification using traditional deep learning and machine learning algorithms has its advantages. 
 
 %% TODO: go into pros and cons?
 
-In fact, Deep Neural Networks (DNN) is exponentially growing in the field of Machine Learning (ML) and Deep Learning. Of the many DNN structures, Convolutional Neural Networks (CNN) are presently the main tool used for image analysis and classification purposes \cite{}. Comparison and evaluation of images using classification algorithms based on traditional machine learning and deep learning are of great significance for selecting algorithms to classify pictures. 
+In fact, Deep Neural Networks (DNN) is exponentially growing in the field of Machine Learning (ML) and Deep Learning. Of the many DNN structures, Convolutional Neural Networks (CNN) are presently the main tool used for image analysis and classification purposes \cite{jain2000statistical}. Comparison and evaluation of images using classification algorithms based on traditional machine learning and deep learning are of great significance for selecting algorithms to classify pictures. 
 
-Due to the aforementioned popularity of cameras, many scientific studies are utilizing photography as a method of monitoring their projects. This usually results in a scientist having to analyze these images themselves, which can take many hours and a lot of technical knowledge \cite{JaisakthiS.M.2017Awms}. However, we can now use image classification models to perform these same tasks in a lot less time with comparable accuracy \cite{JaisakthiS.M.2017Awms}. 
+Due to the aforementioned popularity of cameras, many scientific studies are utilizing photography as a method of monitoring their projects. This usually results in a scientist having to analyze these images themselves, which can take many hours and a lot of technical knowledge \cite{JaisakthiS.M.2017Awms}. However, we can now use image classification models to perform these same tasks in a lot less time with comparable accuracy \cite{JaisakthiS.M.2017Awms}.
+
+Different researchers have done various works. In \cite{he2016deep}, Residual Network, usually known as ResNet was used. It applied residual sections to estimate a denoised image which achieves the human degree of classification. VGG was utilized by a team in the competition\cite{simonyan2014very}. Also, in \cite{zhang2006svm} SVM KNN which is an improved version of the Neural Network classifier was utilized. It converts the distance of K neighbours and applies a multi-class Support Vector Machine. 
 
 The Humpback Whale Identification Challenge is a Kaggle Competition created to aid whale conservation efforts with the creation of an algorithm to identify individual whales in images. After centuries of intense whaling, recovering whale populations still have a hard time adapting to warming oceans and struggle to compete every day with the industrial fishing industry for food. Scientists use photo surveillance systems to monitor whale activity and can use the shape of whales’ tails and unique markings to identify particular whales and analyze their movements \cite{JaisakthiS.M.2017Awms}.
 
-%% TODO: this needs to be refined
-We can use this data to compare and analyze popular methods of image classification. Specifically, we will be comparing a CNN, CNN augmented with transfer learning, and classical machine learning.
+%% TODO: refined
+Data obtained from this challenge were used to compare and analyze popular models of image classification. In this project, we would be comparing a Convolutional Neural Network (CNN) with CNN augmented with transfer learning and classical machine learning models that detect the identity of humpback whales in the picture.
+
+
 
 \subsection{Background}\label{sec: background}
 Despite lacking predators, whales have continued to be endangered. As whales play a large role within the oceans ecosystem, conservation efforts have been consistent over the years in order to ensure a stable food chain. Part of these conservation efforts is the tracking of whales to know the health and status of their species by marine biologists. This is mainly done through aerial surveillance and manual identification which is a very tricky process \cite{JaisakthiS.M.2017Awms}. As whale fins are identifiable features for individual whale, biologists are able to develop conservation strategies by observing individual whale and whale species behaviours. This can take a lot of time and resources, automating this process with a model to identify whales will alleviate this stress and allow for more time to develop better strategies for the continued survival of whales.
 
 Over the years, a lot of research has been done in this field. There have been multiple Kaggle competitions and there are a multitude of approaches to this problem. While there have been some studies on the application of transfer learning augmented deep learning and classical machine learning \cite{YuanHongchun2020AAIC}, it begs the comparison of the a classical machine learning model, such as SVM, as well as the deep learning model itself (without transfer learning). 
 
+\section{Data}\label{sec: data}
+
+The competition contains thousands of images of humpback whale flukes - 25,361 files for training and a further 7,960 for testing. Individual whales have been identified by researchers and given an identification (Id). The challenge is to predict the whale Id of images in the test set. This is particularly challenging for two primary reasons:
+\begin{itemize}
+  \item The heterogeneity of the data. Images drastically vary in size. Some are greyscale, others are in colour. Some whale flukes are pointing towards the sky, others are not. Normalizing the data will be extremely important and is discussed in \autoref{subsec:Preprocessing}.
+  \item Imbalance in the dataset. There are only a few examples for over 5,000 unique whale Ids. Only 227 whales are represented in the dataset more than 10 times while over 2,000 whales are represented by only a single sample, as shown in \autoref{fig:ID_Occ}.  To compensate for this we will be utilizing data augmentation as discussed later in \autoref{subsec:Augmentation}.
+\end{itemize}
+
+%This isn't a great image, there's too much info in its current form to really be legible. For now, it gets the point across.
+\begin{figure}[H]
+    \caption{Number of samples per unique whale Id}
+    \centering
+    \includegraphics[width=\textwidth]{ID_Occurences.png}
+    \label{fig:ID_Occ}
+\end{figure}
+
 \section{Methodology}\label{sec: meth}
+
 %Details of the approach: Include any formulas, pseudocode, diagrams -- anything that is necessary to clearly explain your system and what you have done. If possible, illustrate the intermediate stages of your approach with results images.
 
 %TODO: finish the machine learning model section
 
-In order to identify whales by their fluke we will first preprocess the data to remove noise such as the backgrounds and crop to show only the fin in question. Due to the low amount of images of the same whale, we will perform data augmentation via [insert method here]. This will allow us to develop a more accurate and robust model. We will then attempt to identify the whale via the developed CNN model, the CNN augmented with transfer learning, and [insert ml model here].
+To identify whales by their fluke data preprocessing would be conducted to remove noise and crop to show only the fluke. Due to the sparse number of images of the same whale, we will perform data augmentation by flipping and rotating the underrepresented whale Id images. This will allow us to develop a more accurate and robust model. We will then attempt to identify the whale via a developed CNN model, a CNN augmented with transfer learning, and [insert ml model here].
 
 The steps involved in this identifying system are:
 \begin{itemize}
-    \item Preprocessing the data to remove noise via cropping, affine transformations, and converting to greyscale
+    \item Preprocessing the data
     \item Augmentation of the data
     \item Classification with CNN
     \item Classification with CNN augmented with transfer learning
@@ -163,11 +186,9 @@ The steps involved in this identifying system are:
     \item Comparison of Results
 \end{itemize}
 
-\subsection{Data Preprocessing}
+\subsection{Data Preprocessing}\label{subsec:Preprocessing}
 
-The competition contains thousands of images of humpback whale flukes. Individual whales have been identified by researchers and given an identification (Id). The challenge is to predict the whale Id of images in the test set. What makes this such a challenge is that there are only a few examples for over 3,000 whale Ids. To compensate for this we will be utilizing data augmentation as discussed later in this section. 
-
-Before we can augment the data, however, we need to process it for use in a neural network. The first step was to crop as much noise from the images as possible, such as the background in the images. While many of the whale pictures in the dataset were already cropped tightly around the whale fluke, in some images the whale fluke occupied only a small area of the picture. Zooming onto the relevant part of the picture provides greater accuracy to a classification model. 
+The first step for the processing of the data was to crop as much noise from the images as possible, such as the background in the images. While many of the whale pictures in the dataset were already cropped tightly around the whale fluke, in some images the whale fluke occupied only a small area of the picture. Zooming onto the relevant part of the picture provides greater accuracy to a classification model. 
 
 A couple of months before this competition, a playground version of the same competition was hosted on Kaggle, but, as it was noted by the competition hosts, the real version featured even more data and cleaner labels. We were able to leverage the pre-trained weights from a CNN model from the playground version of the competition that identified the coordinates specifying a bounding box around the fluke of the whale in each image.The CNN model used to determine the proper bounding box of the whale fluke in each image was quite complex, as shown in \autoref{tab:table1}. Leveraging the weights from the trained model saved a lot of time.
 
@@ -202,19 +223,17 @@ A couple of months before this competition, a playground version of the same com
       Conv2D & (4, 4, 64) & 36928\\
       Conv2D & (4, 4, 64) & 36928\\
       BatchNormalization & (4, 4, 64) & 256\\
-      MaxPooling2D_1 & (4, 1, 64) & 0\\
-      MaxPooling2D_2 & (1, 4, 64) & 0\\
-      Flatten_1 & (256) & 0\\
-      Flatten_2 & (256) & 0\\
-      Dense_1 & (16) & 4112\\
-      Dense_2 & (16) & 4112\\
+      MaxPooling2D\_1 & (4, 1, 64) & 0\\
+      MaxPooling2D\_2 & (1, 4, 64) & 0\\
+      Flatten\_1 & (256) & 0\\
+      Flatten\_2 & (256) & 0\\
+      Dense\_1 & (16) & 4112\\
+      Dense\_2 & (16) & 4112\\
       Concatenate & (32) & 0\\
       Dense & (4) & 132\\
     \end{tabular}
-    \begin{tablenotes}
       \small
       \item Trainable params: 502,820
-    \end{tablenotes}
   \end{center}
 \end{table}
 
@@ -227,31 +246,29 @@ By describing the same neural network and loading the pre-trained weights, the t
     \label{fig:fig1}
 \end{figure}
 
+\begin{figure}[h]
+    \caption{Original images (left) and their corresponding processed images (right)}
+    \centering
+    \includegraphics[width=0.5\textwidth]{ProcessedImages.png}
+    \label{fig:fig2}
+\end{figure}
+
 As you can see, the resulting bounding boxes are not perfect. This can be resolved by extending the region described by the bounding box before cropping the image. The idea is that clipping the edges of the fluke is more harmful than the noise obtained by fitting it exactly, thus an increased margin is preferred. Through trial and error, we determined that extending the crop region by 8\% was sufficient to ensure the entire fluke was captured. This is shown to have succeeded when comparing the coloured image from \autoref{fig:fig1} with the output from \autoref{fig:fig2}.
 
 As shown in the previous \autoref{fig:fig1}, some of the images in the dataset are greyscale and some are colour. In order to standardize the data and ensure our model does not learn any colour-only or greyscale-only specific features, we converted all images to greyscale.
 
 An affine transformation is a geometric transformation that preserves lines and parallelism - but not necessarily distances and angles. The final step for data preprocessing was to take the cropped area from the previous step and transform it to a uniform size for use as input to a neural network - in our case, 384x384x1 (only one channel for black and white). The resulting changes after cropping, converting to greyscale, and applying the affine transformation to the images from the previous figure are shown in \autoref{fig:fig2}. With these changes, the data is normalized so that there is as little variation as possible within the dataset aside from the differences between each whale's flukes.
 
-\begin{figure}[h]
-    \caption{Original images (left) and their corresponding processed images (right)}
-    \centering
-    \includegraphics[width=0.4\textwidth]{ProcessedImages.png}
-    \label{fig:fig2}
-\end{figure}
+One final manipulation of the data was the removal of particular samples. In the training dataset, numerous samples were classified as "new\_whale" as opposed to the identification number associated with a particular individual whale. The image features associated with the various "new\_whale" samples, however, do not share any logical overlap. They are different individuals. While these samples would be useful in the testing phase of our model, they do not contribute to proper learning during training; hence, they were removed.
 
-%TODO Remove the new_whale class from the training dataset as it does not share any logical image features between its elements.
-
-%TODO Add stuff about data augmentation
-%Due to this, we will implement the following data augmentation methods in order to gain a larger set of images for each whale.
+\subsection{Data Augmentation}\label{subsec:Augmentation}
+Due to the nature of the data - that is, certain classes with numerous instances and many classes with only one instance - we will have to heavily augment the data. The intent is to augment the data by a combination of flipping and rotating, with perhaps Gaussian noise, random crops, and random blur as well. The intent is to put an emphasis on creating more samples for classes that are under represented, so these will be augmented with every possible combination of our augmentation strategies, while over represented classes will remain untouched. 
 
 \subsection{Model Training}
 
 \subsubsection{Hyperparameter Tuning}
 
 \subsection{Model Testing}
-
-\section{Data}\label{sec: data}
 
 \section{Experiment}\label{sec: experiment}
 
