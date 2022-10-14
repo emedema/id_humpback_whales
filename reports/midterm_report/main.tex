@@ -128,15 +128,11 @@
 
 \section*{Introduction}\label{sec: intro}
 %Define and motivate the problem, discuss background material or related work, and briefly summarize your approach.
-The humpback whale is a species of baleen whale. It has a distinctive body shape with long pectoral fins and a knobbly head. They are known for their infringing and surface behaviour making them popular with whale watchers\cite{kareiva2006whales}. At the beginning of the 20th century, whale populations dropped but increased in the mid-20th century which brought a brief surge in the whale population due to the creation of the international whaling committee in 1946\cite{henderson2022behavior}. To understand better the preservation effort, researchers utilize photo surveillance mechanisms to understand marine activities. Various varieties of features of whales such as the shape, tail, makings, and tail length help researchers identify the type of whale they are analyzing \cite{JaisakthiS.M.2017Awms}. 
+The humpback whale is a species of baleen whale. It has a distinctive body shape with long pectoral fins and a knobbly head. They are known for their infringing and surface behaviour making them popular with whale watchers\cite{kareiva2006whales}. At the beginning of the 20th century, whale populations dropped but increased briefly in the mid-20th century due to the creation of the international whaling committee in 1946\cite{henderson2022behavior}. To better understand the preservation effort, researchers utilize photo surveillance mechanisms to understand marine activities. Various varieties of features of whales such as the shape, tail, markings, and tail length help researchers identify the type of whale they are analyzing \cite{JaisakthiS.M.2017Awms}. In fact, many scientific studies are utilizing photography as a method of monitoring their projects. This usually results in a scientist having to analyze these images themselves, which can take many hours and a lot of technical knowledge \cite{JaisakthiS.M.2017Awms}. However, we can now use image classification models to perform these same tasks in a lot less time with comparable accuracy \cite{JaisakthiS.M.2017Awms}.
 
 Image classification is a booming area of interest in the Computer Vision and Machine Learning fields. Due to the rapid increase of image sharing after the popularity of social media and personal cameras (and later smart phones) \cite{jain2000statistical}, there are a surplus of images to classify and analyze on the internet. There are different algorithms for image classification. The most common ones are deep learning and machine learning. Different models have distinct results in different problems. Image classification using traditional deep learning and machine learning algorithms has its advantages. 
 
-%% TODO: go into pros and cons?
-
 In fact, Deep Neural Networks (DNN) is exponentially growing in the field of Machine Learning (ML) and Deep Learning. Of the many DNN structures, Convolutional Neural Networks (CNN) are presently the main tool used for image analysis and classification purposes \cite{jain2000statistical}. Comparison and evaluation of images using classification algorithms based on traditional machine learning and deep learning are of great significance for selecting algorithms to classify pictures. 
-
-Due to the aforementioned popularity of cameras, many scientific studies are utilizing photography as a method of monitoring their projects. This usually results in a scientist having to analyze these images themselves, which can take many hours and a lot of technical knowledge \cite{JaisakthiS.M.2017Awms}. However, we can now use image classification models to perform these same tasks in a lot less time with comparable accuracy \cite{JaisakthiS.M.2017Awms}.
 
 Different researchers have done various works. In \cite{he2016deep}, Residual Network, usually known as ResNet was used. It applied residual sections to estimate a denoised image which achieves the human degree of classification. VGG was utilized by a team in the competition\cite{simonyan2014very}. Also, in \cite{zhang2006svm} SVM KNN which is an improved version of the Neural Network classifier was utilized. It converts the distance of K neighbours and applies a multi-class Support Vector Machine. 
 
@@ -144,7 +140,6 @@ The Humpback Whale Identification Challenge is a Kaggle Competition created to a
 
 %% TODO: refined
 Data obtained from this challenge were used to compare and analyze popular models of image classification. In this project, we would be comparing a Convolutional Neural Network (CNN) with CNN augmented with transfer learning and classical machine learning models that detect the identity of humpback whales in the picture.
-
 
 
 \subsection{Background}\label{sec: background}
@@ -174,7 +169,7 @@ The competition contains thousands of images of humpback whale flukes - 25,361 f
 
 %TODO: finish the machine learning model section
 
-To identify whales by their fluke data preprocessing would be conducted to remove noise and crop to show only the fluke. Due to the sparse number of images of the same whale, we will perform data augmentation by flipping and rotating the underrepresented whale Id images. This will allow us to develop a more accurate and robust model. We will then attempt to identify the whale via a developed CNN model, a To identify whales by their fluke data preprocessing would be conducted to remove noise and crop to show only the fluke. Due to the sparse number of images of the same whale, we will perform data augmentation by flipping and rotating the underrepresented whale Id images. This will allow us to develop a more accurate and robust model. We will then attempt to identify the whale via a developed CNN model, a CNN augmented with transfer learning, and [insert ml model here]., and [insert ml model here].
+To identify whales by their fluke data preprocessing would be conducted to remove noise and crop to show only the fluke. Due to the sparse number of images of the same whale, we will perform data augmentation by flipping and rotating the underrepresented whale Id images. This will allow us to develop a more accurate and robust model. We will then attempt to identify the whale via a developed CNN model, a CNN augmented with transfer learning, and a SVM.
 
 The steps involved in this identifying system are:
 \begin{itemize}
@@ -182,7 +177,7 @@ The steps involved in this identifying system are:
     \item Augmentation of the data
     \item Classification with CNN
     \item Classification with CNN augmented with transfer learning
-    \item Classification with [model]
+    \item Classification with SVM
     \item Comparison of Results
 \end{itemize}
 
@@ -266,14 +261,43 @@ Due to the nature of the data - that is, certain classes with numerous instances
 
 \subsection{Model Training}
 
+The first model we will utilize for classification is a Convolutional Neural Net (CNN) using the python library Keras. Before we could train the model itself, we had to transform the data into a form that could be utilized for classification. After reading in the data, we separated the X and Y (ie. input and output variables), in our case, the image name and the whale id respectively. After which we read in the images for each image name as an array. We then label encoded then hot-encoded our response variable which will help with classifying the output of the CNN. Once the transformation of the data was done, we began to build our model.
+
+We decided to set the padding of the model to "same" and the activation function to "relu" throughout. Similarly, we decided to utilize max-pooling, in essence this means our output shape follows the following equation: $output\_shape = math.floor((input_shape - 1) / strides) + 1$. We also used BatchNormalization and Dropout in order to prevent over-fitting. The Adam optimizer was also used to optimize the gradient descent of our model.
+
+In order to determine if this model architecture will work for our data, we fit it onto a 10\% of the training data. If the model overfits onto this subset of the data, that means the model will most likely accurately work on our data.
+
+After running our model on the subset of our data, we received a overfit on the data as seen in Figure \ref{fig:cnn_acc_10p} and Figure \ref{fig:cnn_loss_10p} with the extremely high accuracy and extremely low loss.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{reports/midterm_report/images/training_cnn_acc_10p.png}
+    \caption{Training Accuracy on 10\% of Training Data}
+    \label{fig:cnn_acc_10p}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{reports/midterm_report/images/training_10p_loss.png}
+    \caption{Training Loss on 10\% of Training Data}
+    \label{fig:cnn_loss_10p}
+\end{figure}
+
 \subsubsection{Hyperparameter Tuning}
+
+[Under Construction]
 
 \subsection{Model Testing}
 
+[Under Construction]
+
 \section{Experiment}\label{sec: experiment}
+
+[Under Construction]
 
 \section{Conclusion}\label{sec: conlusion}
 
+[Under Construction]
  
 \clearpage
 \bibliography{references} 
