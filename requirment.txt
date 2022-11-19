@@ -1,0 +1,8 @@
+matplotlib
+argparse
+sklearn
+keras
+pillow
+numpy
+scipy
+tqdm
