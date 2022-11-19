@@ -1,8 +1,8 @@
 numpy
 pandas
+sklearn
 matplotlib
 argparse
-sklearn
 keras
 pillow
 numpy
