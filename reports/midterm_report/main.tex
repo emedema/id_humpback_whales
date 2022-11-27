@@ -32,6 +32,7 @@
 \usepackage{fourier}
 \usepackage{float}
 \usepackage[english]{babel}															% English language/hyphenation
+\usepackage{needspace}
 \usepackage[protrusion=true,expansion=true]{microtype}	
 \usepackage{amsmath,amsfonts,amsthm} % Math packages
 \usepackage[pdftex]{graphicx}	
@@ -156,11 +157,10 @@ The \href{https://www.kaggle.com/competitions/humpback-whale-identification/over
   \item Imbalance in the dataset. There is a relatively small dataset compared to the 5,000 unique whale Ids present in the data. Only 227 whales are represented in the dataset more than 10 times while over 2,000 whales are represented by only a single sample, as shown in \autoref{fig:ID_Occ}. To compensate for this we will be utilizing data augmentation as discussed later in \autoref{subsec:Augmentation}.
 \end{itemize}
 
-%This isn't a great image, there's too much info in its current form to really be legible. For now, it gets the point across.
 \begin{figure}[H]
-    \caption{Number of samples per unique whale Id}
     \centering
-    \includegraphics[width=\textwidth]{ID_Occurences.png}
+    \includegraphics[width=0.5\textwidth]{ID_Occurences.png}
+    \caption{Number of  cases for various numbers of whale images}
     \label{fig:ID_Occ}
 \end{figure}
 
@@ -170,7 +170,7 @@ The \href{https://www.kaggle.com/competitions/humpback-whale-identification/over
 
 %TODO: finish the machine learning model section
 
-To identify whales by their fluke data preprocessing would be conducted to remove noise and crop to show only the fluke. Due to the sparse number of images of the same whale, we will perform data augmentation by flipping and rotating the underrepresented whale Id images. This will allow us to develop a more accurate and robust model. We will then attempt to identify the whale via a developed CNN model, a CNN augmented with transfer learning, and a SVM.
+To identify whales by their fluke data preprocessing would be conducted to remove noise and crop to show only the fluke. Due to the sparse number of images of the same whale, we will perform data augmentation by flipping and rotating the under represented whale Id images. This will allow us to develop a more accurate and robust model. We will then attempt to identify the whale via a developed CNN model, a CNN augmented with transfer learning, and a SVM.
 
 The steps involved in this identifying system are:
 \begin{itemize}
@@ -236,16 +236,16 @@ A couple of months before this competition, a playground version of the same com
 By describing the same neural network and loading the pre-trained weights, the training dataset could then be passed to the model and evaluated to obtain the coordinates for bounding boxes around the whales' flukes. These coordinates can then be used to visualize the bounding box region, as shown in \autoref{fig:fig1}.
 
 \begin{figure}[h]
-    \caption{Coordinates for Bounding Box overlayed on the corresponding images}
     \centering
     \includegraphics[width=0.5\textwidth]{BoundingBoxExample.png}
+    \caption{Coordinates for Bounding Box overlayed on the corresponding images}
     \label{fig:fig1}
 \end{figure}
 
 \begin{figure}[h]
-    \caption{Original images (left) and their corresponding processed images (right)}
     \centering
     \includegraphics[width=0.5\textwidth]{ProcessedImages.png}
+    \caption{Original images (left) and their corresponding processed images (right)}
     \label{fig:fig2}
 \end{figure}
 
@@ -260,7 +260,9 @@ One final manipulation of the data was the removal of particular samples. In the
 \subsection{Data Augmentation}\label{subsec:Augmentation}
 Due to the nature of the data - that is, certain classes with numerous instances and many classes with only one instance - we will have to heavily augment the data. The intent is to augment the data by a combination of flipping and rotating, with perhaps Gaussian noise, random crops, and random blur as well. The intent is to put an emphasis on creating more samples for classes that are under represented, so these will be augmented with every possible combination of our augmentation strategies, while over represented classes will remain untouched. 
 
-\subsection{Model Training}
+\subsection{Model Training and Testing}
+
+\subsubsection{Model 1}
 
 The first model we will utilize for classification is a CNN using the python library Keras. Before we could train the model itself, we had to transform the data into a form that could be utilized for classification, as discussed in  \autoref{subsec:Preprocessing}. After reading in the data, we separated the X and Y (i.e., input and output variables), the image name and the whale id respectively. We then read in the images for each image name as an array. We then hot-encoded our response variable which will help with classifying the output of the CNN. Once the transformation of the data was done, we began to build our model.
 
@@ -284,13 +286,58 @@ After running the model on the subset of data, we received an overfitting of the
     \label{fig:cnn_loss_10p}
 \end{figure}
 
-\subsubsection{Hyperparameter Tuning}
-
 [Under Construction]
 
-\subsection{Model Testing}
+\subsubsection{Model 2}
 
-[Under Construction]
+The second model we utilized for classification leveraged transfer learning. There aren't an abundance of available pretrained models to be found, but a good option was VGG16. The architecture of VGG16 can be seen at \autoref{fig:VGG16}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{VGG16.png}
+    \caption{Architecture of VGG16}
+    \label{fig:VGG16}
+\end{figure}
+
+Of note, the base VGG16 model has over 14 million trainable parameters. In order to leverage this model, we loaded weights that were trained on the ImageNet dataset, but replaced the final ImageNet classification layer with a maxpooling layer that belongs to the Feature Learning part of the network. The base model was then connected to a dropout layer (20\% drop chance), a dense fully connected layer (128 neurons), another dropout layer (20\% drop chance), and finally a dense fully connected layer used for classification on the whale dataset. 
+
+It became immediately obvious that not just the imbalance of the dataset would be a problem, but also its size. We had intended to augment the under represented samples, but this created a final output layer with over 5000 neurons resulting in a prohibitively large number of trainable parameters. This is particularly relevant due to the fine-tuning phase of a transfer learning process, where you train the entire model with a small learning weight. Instead, a minimum threshold was used to train the model using whales who were represented by at least 20 samples. This reduced the final number of target classes to 59. The final model used is shown in \autoref{tab:table2}. Reducing the final layer to this smaller subset of whales, however, meant that the intended use of the Playground dataset as validation data was no longer possible. Instead, the filtered training dataset was split into training and validation sets with a 3:1 ratio.
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Transfer Learning Model}
+    \label{tab:table2}
+    \begin{tabular}{l|c|r} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+      \textbf{Layer} & \textbf{Output Shape} & \textbf{Params}\\
+      \hline
+      VGG16 & (512) & 14714688 (\textit{frozen})\\
+      Dropout & (512) & 0\\
+      Dense & (128)) & 65664\\
+      Dropout & (128) & 0\\
+      Dense & (59)) & 7611\\
+    \end{tabular}
+      \small
+      \item Trainable params: 73,275
+  \end{center}
+\end{table}
+
+With the base model's weights frozen, after training for 30 epochs the accuracy remained very low, not even reaching 40\%. The secret to good transfer learning, however, is by first training the weights of a novel classification layer with the pretrained weights from the larger dataset, but then crucially, training the entire model with a small learning weight. In this fashion, you can leverage the pretrained weights to relatively quickly set the new classification layer's weights to reasonable values. Then, the entire network is slowly updated with a small learning rate - this phase is called the fine-tuning phase. This transfer learning method typically results in a higher accuracy then even if the entire model was trained from scratch on only this small dataset. The entire model was trained for a further 30 epochs with a learning rate of 1e-5. The accuracy, and loss over time are shown in figures \autoref{fig:TLACC}, and \autoref{fig:TLLOSS} respectively. The final accuracy achieved was 90.28\%.
+
+We believe this model that leverages transfer learning could be improved further. Instead of reducing the training set rather arbitrarily to 59 classes (whales with at least 20 samples), the under represented samples could instead be augmented and  included in the training dataset. While this model has the potential to score well on a test submission, it was only trained on 59 of the over 5000 provided unique whales. Obviously, it will not be able to identify the vast majority of whales - it is simply adapt at classifying the whales it happened to be trained on. Training for such a complex model, however, would take a \textit{significant} period of time.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{TLaccuracy.png}
+    \caption{Transfer Learning with VGG16 - Accuracy}
+    \label{fig:TLACC}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{TLloss.png}
+    \caption{Transfer Learning with VGG16 - Loss}
+    \label{fig:TLLOSS}
+\end{figure}
 
 \section{Experiment}\label{sec: experiment}
 
@@ -299,7 +346,23 @@ After running the model on the subset of data, we received an overfitting of the
 \section{Conclusion}\label{sec: conlusion}
 
 [Under Construction]
- 
+
+\needspace{20em}% Require at least 6em on the page
+\section{Team Contribution}\label{sec: teamcontribution}
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Team Contribution}
+    \label{tab:contributionTable}
+    \begin{tabular}{l|c|r}
+      \textbf{Team Member} & \textbf{Tasks Completed} & \textbf{Percentage of Project}\\
+      \hline
+      Stephen McKeon & Data Augmentation & 20\%...?\\
+                     & Model 2 - Transfer Learning & 20\%...?\\
+    \end{tabular}
+  \end{center}
+\end{table}
+
 \clearpage
 \bibliography{references} 
 \bibliographystyle{ieeetr}
