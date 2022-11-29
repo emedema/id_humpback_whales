@@ -5,6 +5,5 @@ matplotlib
 argparse
 keras
 pillow
-numpy
 scipy
 tqdm
