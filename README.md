@@ -4,4 +4,4 @@ The dataset used for was obtained from Kaggle. It contains thousands of images o
 
 
  We used a CNN, Transfer Learning, and a SVM and compare their results to find the most effective model for the identification of individual humpback whales.
- CNN and Transfer learning predictably perform well, but due overfitting in the CNN model, Transfer Learning is the better model.
+ CNN and Transfer learning predictably perform well, but due to overfitting in the CNN model, Transfer Learning is the better model.
